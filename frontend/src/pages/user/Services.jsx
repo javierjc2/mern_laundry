@@ -42,66 +42,51 @@ function UserServices() {
     if (window.confirm('Are you sure you want to log out?')) { logout(); navigate('/login'); }
   };
 
-  const s = {
-    page: { fontFamily: "'Poppins', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)' },
-    header: { background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 },
-    navbar: { maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 2rem' },
-    logo: { fontSize: '1.5rem', fontWeight: 700, background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    navLinks: { display: 'flex', gap: '2rem', alignItems: 'center' },
-    navLink: { color: '#4a5568', textDecoration: 'none', fontWeight: 500, fontSize: '0.95rem' },
-    logoutBtn: { padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 600, fontFamily: 'Poppins' },
-    content: { maxWidth: '1200px', margin: '0 auto', padding: '3rem 2rem' },
-    title: { color: 'white', fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center' },
-    subtitle: { color: 'rgba(255,255,255,0.8)', textAlign: 'center', marginBottom: '2rem' },
-    grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' },
-    card: (isSelected) => ({
-      background: isSelected ? 'linear-gradient(135deg, #4D6F71, #365456)' : 'rgba(255,255,255,0.95)',
-      borderRadius: '15px', padding: '1.5rem', cursor: 'pointer',
-      transition: 'all 0.3s ease', border: isSelected ? '3px solid #fff' : '3px solid transparent',
-      boxShadow: isSelected ? '0 15px 40px rgba(0,0,0,0.3)' : '0 5px 20px rgba(0,0,0,0.1)',
-      transform: isSelected ? 'translateY(-5px)' : 'none',
-    }),
-    cardName: (isSelected) => ({ fontSize: '1.2rem', fontWeight: 700, color: isSelected ? 'white' : '#2d3748', marginBottom: '0.5rem' }),
-    cardDesc: (isSelected) => ({ fontSize: '0.9rem', color: isSelected ? 'rgba(255,255,255,0.8)' : '#718096', marginBottom: '1rem', lineHeight: 1.5 }),
-    cardPrice: (isSelected) => ({ fontSize: '1.3rem', fontWeight: 700, color: isSelected ? '#a0ecc4' : '#4D6F71' }),
-    checkmark: { float: 'right', fontSize: '1.5rem', color: 'white' },
-    bottomBar: { position: 'fixed', bottom: 0, left: 0, right: 0, background: 'rgba(255,255,255,0.97)', boxShadow: '0 -5px 20px rgba(0,0,0,0.1)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 },
-    totalText: { fontSize: '1.2rem', fontWeight: 700, color: '#2d3748' },
-    proceedBtn: { padding: '0.8rem 2.5rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', fontFamily: 'Poppins', boxShadow: '0 5px 15px rgba(0,0,0,0.2)' },
-  };
-
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}>
-          <div style={s.logo}>IV's Laundry Service</div>
-          <div style={s.navLinks}>
-            <Link to="/services" style={{...s.navLink, color: '#4D6F71', fontWeight: 700}}>Services</Link>
-            <Link to="/my-bookings" style={s.navLink}>My Bookings</Link>
-            <Link to="/profile" style={s.navLink}>Profile</Link>
-            <button onClick={handleLogout} style={s.logoutBtn}>Log Out</button>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans">
+      <header className="bg-white/95 backdrop-blur shadow-[0_4px_20px_rgba(0,0,0,0.1)] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center px-8 py-5 gap-4">
+          <div className="text-2xl font-bold bg-gradient-to-br from-[#4D6F71] to-[#365456] bg-clip-text text-transparent">IV's Laundry Service</div>
+          <div className="flex flex-wrap items-center gap-6">
+            <Link to="/services" className="text-primary font-bold text-[0.95rem] transition-colors hover:text-primary-light">Services</Link>
+            <Link to="/my-bookings" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">My Bookings</Link>
+            <Link to="/profile" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Profile</Link>
+            <button onClick={handleLogout} className="px-6 py-2 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white border-none rounded-[25px] cursor-pointer font-semibold text-sm transition-all duration-300 hover:shadow-[0_4px_15px_rgba(0,0,0,0.25)]">Log Out</button>
           </div>
         </div>
       </header>
 
-      <div style={{...s.content, paddingBottom: selected.length > 0 ? '6rem' : '3rem'}}>
-        <h1 style={s.title}>Select Your Services</h1>
-        <p style={s.subtitle}>Choose one or more laundry services you need</p>
+      <div className={`max-w-[1200px] mx-auto px-8 py-12 ${selected.length > 0 ? 'pb-24' : 'pb-12'}`}>
+        <h1 className="text-white text-4xl font-bold mb-2 text-center">Select Your Services</h1>
+        <p className="text-white/80 text-center mb-8">Choose one or more laundry services you need</p>
 
         {loading ? (
-          <div style={{ textAlign: 'center', color: 'white', padding: '3rem', fontSize: '1.2rem' }}>Loading services...</div>
+          <div className="text-center text-white py-12 text-lg">
+            <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            Loading services...
+          </div>
         ) : services.length === 0 ? (
-          <div style={{ textAlign: 'center', color: 'white', padding: '3rem', fontSize: '1.1rem' }}>No services available at the moment.</div>
+          <div className="text-center text-white py-12 text-lg">No services available at the moment.</div>
         ) : (
-          <div style={s.grid}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map(service => {
               const isSelected = selected.includes(service._id);
               return (
-                <div key={service._id} style={s.card(isSelected)} onClick={() => toggleService(service._id)}>
-                  {isSelected && <span style={s.checkmark}>✓</span>}
-                  <div style={s.cardName(isSelected)}>{service.name}</div>
-                  <div style={s.cardDesc(isSelected)}>{service.description}</div>
-                  <div style={s.cardPrice(isSelected)}>₱{parseFloat(service.price).toFixed(2)}</div>
+                <div 
+                  key={service._id} 
+                  className={`rounded-[15px] p-6 cursor-pointer transition-all duration-300 flex flex-col justify-between h-full ${
+                    isSelected 
+                      ? 'bg-gradient-to-br from-[#4D6F71] to-[#365456] border-2 border-white shadow-[0_15px_40px_rgba(0,0,0,0.3)] -translate-y-1' 
+                      : 'bg-white/95 border-2 border-transparent shadow-[0_5px_20px_rgba(0,0,0,0.1)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,0,0,0.15)]'
+                  }`}
+                  onClick={() => toggleService(service._id)}
+                >
+                  <div>
+                    {isSelected && <span className="float-right text-white text-xl font-bold">✓</span>}
+                    <div className={`text-xl font-bold mb-2 ${isSelected ? 'text-white' : 'text-gray-800'}`}>{service.name}</div>
+                    <div className={`text-sm mb-4 leading-relaxed ${isSelected ? 'text-white/80' : 'text-gray-600'}`}>{service.description}</div>
+                  </div>
+                  <div className={`text-lg font-bold ${isSelected ? 'text-[#a0ecc4]' : 'text-primary'}`}>₱{parseFloat(service.price).toFixed(2)}</div>
                 </div>
               );
             })}
@@ -110,12 +95,12 @@ function UserServices() {
       </div>
 
       {selected.length > 0 && (
-        <div style={s.bottomBar}>
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur shadow-[0_-5px_20px_rgba(0,0,0,0.1)] px-8 py-4 flex justify-between items-center z-50">
           <div>
-            <div style={s.totalText}>Total: ₱{getTotal().toFixed(2)}</div>
-            <div style={{ fontSize: '0.85rem', color: '#718096' }}>{selected.length} service(s) selected</div>
+            <div className="text-lg font-bold text-gray-800">Total: ₱{getTotal().toFixed(2)}</div>
+            <div className="text-xs text-gray-500 font-medium">{selected.length} service(s) selected</div>
           </div>
-          <button onClick={handleProceed} style={s.proceedBtn}>Proceed to Booking →</button>
+          <button onClick={handleProceed} className="px-10 py-3.5 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white border-none rounded-[25px] cursor-pointer font-bold text-[0.95rem] transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)]">Proceed to Booking →</button>
         </div>
       )}
     </div>

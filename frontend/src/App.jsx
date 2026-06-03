@@ -15,14 +15,17 @@ import AdminServices from './pages/admin/Services';
 import AdminBookings from './pages/admin/Bookings';
 import AdminCustomers from './pages/admin/Customers';
 
-import './App.css';
-
 // Protected Route Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div className="loading-screen">Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white text-xl font-semibold font-sans">
+        <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+        Loading...
+      </div>
+    );
   }
 
   if (!user) {
@@ -41,7 +44,12 @@ const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div className="loading-screen">Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white text-xl font-semibold font-sans">
+        <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+        Loading...
+      </div>
+    );
   }
 
   if (user) {

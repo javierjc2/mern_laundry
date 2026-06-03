@@ -52,19 +52,17 @@ function AdminBookings() {
 
   const updateStatus = async () => {
     try {
-      // FIX: The backend PUT /api/admin/bookings/:id requires services array
-      // We send the full booking data with updated status
       const serviceIds = selectedBooking.services.map(s => s._id || s);
 
       await axios.put(`/api/admin/bookings/${selectedBooking._id}`, {
         user: selectedBooking.user?._id || selectedBooking.user,
-        services: serviceIds,                        // ← Required by backend
+        services: serviceIds,
         pickupDate: selectedBooking.pickupDate,
         deliveryDate: selectedBooking.deliveryDate,
         pickupAddress: selectedBooking.pickupAddress,
         totalPrice: selectedBooking.totalPrice,
         notes: selectedBooking.notes,
-        status: newStatus                            // ← Updated status
+        status: newStatus
       });
 
       alert('Status updated successfully!');
@@ -79,69 +77,51 @@ function AdminBookings() {
     if (window.confirm('Are you sure you want to log out?')) { logout(); navigate('/login'); }
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      'pending': '#f6ad55', 'picked-up': '#63b3ed', 'processing': '#76e4f7',
-      'ready': '#68d391', 'delivered': '#9ae6b4', 'cancelled': '#fc8181'
+  const getStatusBadgeClass = (status) => {
+    const classes = {
+      'pending': 'bg-amber-100 text-amber-800 border-amber-200',
+      'picked-up': 'bg-blue-100 text-blue-800 border-blue-200',
+      'processing': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+      'ready': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      'delivered': 'bg-green-100 text-green-800 border-green-200',
+      'cancelled': 'bg-red-100 text-red-800 border-red-200'
     };
-    return colors[status] || '#e2e8f0';
+    return classes[status] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
 
-  const s = {
-    page: { fontFamily: "'Poppins', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)' },
-    header: { background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 },
-    navbar: { maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 2rem' },
-    logo: { fontSize: '1.5rem', fontWeight: 700, background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    navLinks: { display: 'flex', gap: '2rem', alignItems: 'center' },
-    navLink: { color: '#4a5568', textDecoration: 'none', fontWeight: 500 },
-    logoutBtn: { padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 600, fontFamily: 'Poppins' },
-    content: { maxWidth: '1400px', margin: '0 auto', padding: '2rem' },
-    title: { color: 'white', fontSize: '2rem', fontWeight: 700, marginBottom: '1.5rem' },
-    filterBox: { background: 'rgba(255,255,255,0.95)', borderRadius: '15px', padding: '1.5rem', marginBottom: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' },
-    input: { padding: '0.6rem 1rem', borderRadius: '8px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', fontSize: '0.9rem', flex: 1, minWidth: '200px' },
-    select: { padding: '0.6rem 1rem', borderRadius: '8px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', fontSize: '0.9rem', minWidth: '160px' },
-    clearBtn: { padding: '0.6rem 1.2rem', background: '#e2e8f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600 },
-    table: { width: '100%', borderCollapse: 'collapse', background: 'rgba(255,255,255,0.97)', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' },
-    th: { padding: '1rem', textAlign: 'left', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', color: 'white', fontWeight: 600, whiteSpace: 'nowrap' },
-    td: { padding: '1rem', borderBottom: '1px solid #e2e8f0', verticalAlign: 'top' },
-    statusBadge: (status) => ({ padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, background: getStatusColor(status), color: '#2d3748', display: 'inline-block', whiteSpace: 'nowrap' }),
-    updateBtn: { padding: '6px 16px', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontFamily: 'Poppins', fontSize: '0.85rem', fontWeight: 600 },
-    overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center' },
-    modal: { background: 'white', borderRadius: '20px', padding: '2rem', width: '90%', maxWidth: '460px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' },
-    modalTitle: { fontSize: '1.4rem', color: '#2d3748', fontWeight: 700, marginBottom: '0.5rem' },
-    modalSub: { color: '#718096', fontSize: '0.9rem', marginBottom: '1.5rem' },
-    label: { display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: '#4a5568' },
-    modalSelect: { width: '100%', padding: '0.8rem', borderRadius: '8px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', marginBottom: '1.5rem', fontSize: '1rem' },
-    modalBtns: { display: 'flex', gap: '1rem', justifyContent: 'flex-end' },
-    cancelBtn: { padding: '0.7rem 1.5rem', background: '#e2e8f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600 },
-    saveBtn: { padding: '0.7rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600 },
-  };
-
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}>
-          <div style={s.logo}>IV's Laundry Service</div>
-          <div style={s.navLinks}>
-            <Link to="/admin" style={s.navLink}>Dashboard</Link>
-            <Link to="/admin/services" style={s.navLink}>Services</Link>
-            <Link to="/admin/bookings" style={{ ...s.navLink, color: '#4D6F71', fontWeight: 700 }}>Records</Link>
-            <Link to="/admin/customers" style={s.navLink}>Users</Link>
-            <button onClick={handleLogout} style={s.logoutBtn}>Log Out</button>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans text-gray-800">
+      <header className="bg-white/95 backdrop-blur sticky top-0 z-50 shadow-md">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center px-8 py-5 md:px-20 gap-4">
+          <div className="font-bold text-2xl text-primary">IV's Laundry Service</div>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-[30px]">
+            <Link to="/admin" className="px-5 py-2 font-medium text-base text-primary rounded-full transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-primary-light hover:text-white cursor-pointer">Dashboard</Link>
+            <Link to="/admin/services" className="px-5 py-2 font-medium text-base text-primary rounded-full transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-primary-light hover:text-white cursor-pointer">Services</Link>
+            <Link to="/admin/bookings" className="bg-gradient-to-br from-primary to-primary-light text-white font-medium text-base px-5 py-2 rounded-full">Records</Link>
+            <Link to="/admin/customers" className="px-5 py-2 font-medium text-base text-primary rounded-full transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-primary-light hover:text-white cursor-pointer">Users</Link>
+            <button onClick={handleLogout} className="px-5 py-2 font-medium text-base text-primary rounded-full transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-primary-light hover:text-white cursor-pointer">Log Out</button>
           </div>
         </div>
       </header>
 
-      <div style={s.content}>
-        <h1 style={s.title}>📋 Booking Records</h1>
+      <div className="max-w-[1400px] mx-auto px-8 py-10 md:px-20">
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">📋 Booking Records</h1>
 
         {/* Filters */}
-        <div style={s.filterBox}>
-          <input style={s.input} placeholder="🔍 Search by customer name or email..."
-            value={search} onChange={e => setSearch(e.target.value)} />
-          <select style={s.select} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+        <div className="bg-white/95 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row gap-4 flex-wrap items-center shadow-lg">
+          <input 
+            className="w-full sm:flex-1 min-w-[200px] px-4 py-3 border-2 border-gray-200 rounded-lg text-sm font-sans focus:outline-none focus:border-primary transition-colors" 
+            placeholder="🔍 Search by customer name or email..."
+            value={search} 
+            onChange={e => setSearch(e.target.value)} 
+          />
+          <select 
+            className="w-full sm:w-auto min-w-[160px] px-4 py-3 border-2 border-gray-200 rounded-lg text-sm font-sans focus:outline-none focus:border-primary transition-colors" 
+            value={filterStatus} 
+            onChange={e => setFilterStatus(e.target.value)}
+          >
             <option value="">All Status</option>
             <option value="pending">Pending</option>
             <option value="picked-up">Picked Up</option>
@@ -150,69 +130,78 @@ function AdminBookings() {
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
           </select>
-          <button style={s.clearBtn} onClick={() => { setSearch(''); setFilterStatus(''); }}>Clear</button>
-          <span style={{ color: '#4a5568', fontWeight: 600, fontSize: '0.9rem' }}>
+          <button 
+            className="w-full sm:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold text-sm cursor-pointer transition-colors hover:bg-gray-300" 
+            onClick={() => { setSearch(''); setFilterStatus(''); }}
+          >
+            Clear
+          </button>
+          <span className="text-sm font-semibold text-gray-500">
             {filtered.length} of {bookings.length} records
           </span>
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', color: 'white', padding: '3rem', fontSize: '1.2rem' }}>
+          <div className="text-center text-white py-16 text-lg font-medium">
             Loading records...
           </div>
         ) : (
-          <div style={{ overflowX: 'auto', borderRadius: '15px' }}>
-            <table style={s.table}>
+          <div className="bg-white rounded-2xl shadow-xl overflow-x-auto">
+            <table className="w-full border-collapse">
               <thead>
-                <tr>
-                  <th style={s.th}>#</th>
-                  <th style={s.th}>Customer</th>
-                  <th style={s.th}>Services</th>
-                  <th style={s.th}>Pickup Date</th>
-                  <th style={s.th}>Delivery Date</th>
-                  <th style={s.th}>Address</th>
-                  <th style={s.th}>Total</th>
-                  <th style={s.th}>Status</th>
-                  <th style={s.th}>Action</th>
+                <tr className="bg-gradient-to-br from-primary to-[#365456] text-white text-left">
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">#</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Customer</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Services</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Pickup Date</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Delivery Date</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Address</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Total</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Status</th>
+                  <th className="px-6 py-4.5 font-bold text-sm md:text-base">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan="9" style={{ ...s.td, textAlign: 'center', padding: '3rem', color: '#718096' }}>
+                    <td colSpan="9" className="px-6 py-12 text-center text-gray-500">
                       No bookings found.
                     </td>
                   </tr>
                 ) : filtered.map((b, i) => (
-                  <tr key={b._id} style={{ background: i % 2 === 0 ? 'white' : '#f7fafc' }}>
-                    <td style={s.td}>{i + 1}</td>
-                    <td style={s.td}>
-                      <div style={{ fontWeight: 600, color: '#2d3748' }}>{b.user?.firstName} {b.user?.lastName}</div>
-                      <div style={{ fontSize: '0.8rem', color: '#718096' }}>{b.user?.email}</div>
-                      <div style={{ fontSize: '0.8rem', color: '#718096' }}>{b.user?.phone}</div>
+                  <tr key={b._id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                    <td className="px-6 py-4.5 text-sm md:text-base text-gray-600">{i + 1}</td>
+                    <td className="px-6 py-4.5 text-sm md:text-base">
+                      <div className="font-semibold text-gray-800">{b.user?.firstName} {b.user?.lastName}</div>
+                      <div className="text-xs text-gray-500">{b.user?.email}</div>
+                      <div className="text-xs text-gray-500">{b.user?.phone}</div>
                     </td>
-                    <td style={s.td}>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                    <td className="px-6 py-4.5 text-sm md:text-base">
+                      <div className="flex flex-wrap gap-1">
                         {b.services?.map(sv => (
-                          <span key={sv._id} style={{ padding: '2px 8px', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 600 }}>
+                          <span key={sv._id} className="px-2 py-0.5 bg-gradient-to-br from-primary to-[#365456] text-white rounded-full text-[11px] font-semibold">
                             {sv.name}
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td style={s.td}>{formatDate(b.pickupDate)}</td>
-                    <td style={s.td}>{formatDate(b.deliveryDate)}</td>
-                    <td style={s.td}>
-                      <div style={{ fontSize: '0.85rem', maxWidth: '140px', color: '#4a5568' }}>{b.pickupAddress}</div>
+                    <td className="px-6 py-4.5 text-sm md:text-base text-gray-700">{formatDate(b.pickupDate)}</td>
+                    <td className="px-6 py-4.5 text-sm md:text-base text-gray-700">{formatDate(b.deliveryDate)}</td>
+                    <td className="px-6 py-4.5 text-sm md:text-base text-gray-600">
+                      <div className="max-w-[140px] break-words text-xs">{b.pickupAddress}</div>
                     </td>
-                    <td style={s.td}>
-                      <strong style={{ color: '#4D6F71', fontSize: '1rem' }}>₱{parseFloat(b.totalPrice || 0).toFixed(2)}</strong>
+                    <td className="px-6 py-4.5 text-sm md:text-base font-bold text-primary">
+                      ₱{parseFloat(b.totalPrice || 0).toFixed(2)}
                     </td>
-                    <td style={s.td}>
-                      <span style={s.statusBadge(b.status)}>{b.status?.toUpperCase()}</span>
+                    <td className="px-6 py-4.5 text-sm md:text-base">
+                      <span className={`px-3 py-1 rounded-full text-[11px] font-bold border inline-block whitespace-nowrap uppercase ${getStatusBadgeClass(b.status)}`}>
+                        {b.status}
+                      </span>
                     </td>
-                    <td style={s.td}>
-                      <button onClick={() => openStatusModal(b)} style={s.updateBtn}>Update Status</button>
+                    <td className="px-6 py-4.5 text-sm md:text-base">
+                      <button onClick={() => openStatusModal(b)} className="px-4 py-2 bg-gradient-to-br from-primary to-[#365456] text-white rounded-lg font-semibold text-xs transition-all hover:-translate-y-0.5 shadow-md">
+                        Update Status
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -224,16 +213,20 @@ function AdminBookings() {
 
       {/* Status Update Modal */}
       {showModal && selectedBooking && (
-        <div style={s.overlay} onClick={() => setShowModal(false)}>
-          <div style={s.modal} onClick={e => e.stopPropagation()}>
-            <h2 style={s.modalTitle}>Update Booking Status</h2>
-            <p style={s.modalSub}>
-              Customer: <strong>{selectedBooking.user?.firstName} {selectedBooking.user?.lastName}</strong>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50" onClick={() => setShowModal(false)}>
+          <div className="bg-white rounded-2xl p-8 max-w-md w-[90%] shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h2 className="text-xl font-bold text-gray-800 mb-2">Update Booking Status</h2>
+            <div className="text-sm text-gray-500 mb-6 leading-relaxed">
+              Customer: <strong className="text-gray-700">{selectedBooking.user?.firstName} {selectedBooking.user?.lastName}</strong>
               <br />
-              Current: <span style={{ ...s.statusBadge(selectedBooking.status), fontSize: '0.75rem' }}>{selectedBooking.status?.toUpperCase()}</span>
-            </p>
-            <label style={s.label}>New Status</label>
-            <select style={s.modalSelect} value={newStatus} onChange={e => setNewStatus(e.target.value)}>
+              Current Status: <span className={`px-3 py-0.5 rounded-full text-[10px] font-bold border inline-block whitespace-nowrap uppercase ml-1 ${getStatusBadgeClass(selectedBooking.status)}`}>{selectedBooking.status}</span>
+            </div>
+            <label className="block mb-2 font-semibold text-gray-700 text-sm">New Status</label>
+            <select 
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm font-sans focus:outline-none focus:border-primary transition-colors mb-6" 
+              value={newStatus} 
+              onChange={e => setNewStatus(e.target.value)}
+            >
               <option value="pending">Pending</option>
               <option value="picked-up">Picked Up</option>
               <option value="processing">Processing</option>
@@ -241,9 +234,13 @@ function AdminBookings() {
               <option value="delivered">Delivered</option>
               <option value="cancelled">Cancelled</option>
             </select>
-            <div style={s.modalBtns}>
-              <button onClick={() => setShowModal(false)} style={s.cancelBtn}>Cancel</button>
-              <button onClick={updateStatus} style={s.saveBtn}>✓ Save Changes</button>
+            <div className="flex gap-4 justify-end">
+              <button onClick={() => setShowModal(false)} className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold text-sm cursor-pointer transition-colors hover:bg-gray-300">
+                Cancel
+              </button>
+              <button onClick={updateStatus} className="px-6 py-3 bg-gradient-to-br from-primary to-[#365456] text-white rounded-lg font-semibold text-sm cursor-pointer transition-all hover:-translate-y-0.5 shadow-md">
+                ✓ Save Changes
+              </button>
             </div>
           </div>
         </div>
@@ -253,3 +250,4 @@ function AdminBookings() {
 }
 
 export default AdminBookings;
+

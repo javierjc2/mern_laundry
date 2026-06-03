@@ -14,7 +14,6 @@ function MyBookings() {
 
   const loadBookings = async () => {
     try {
-      // FIX: Correct endpoint is /api/bookings/my-bookings
       const res = await axios.get('/api/bookings/my-bookings');
       setBookings(res.data);
     } catch (err) {
@@ -28,7 +27,6 @@ function MyBookings() {
   const handleCancel = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this booking?')) return;
     try {
-      // FIX: Correct cancel endpoint is PATCH /api/bookings/:id/cancel
       await axios.patch(`/api/bookings/${id}/cancel`);
       alert('Booking cancelled successfully!');
       loadBookings();
@@ -41,144 +39,127 @@ function MyBookings() {
     if (window.confirm('Are you sure you want to log out?')) { logout(); navigate('/login'); }
   };
 
-  const getStatusColor = (status) => {
+  const getStatusBadgeClass = (status) => {
     const map = {
-      'pending': '#f6ad55',
-      'picked-up': '#63b3ed',
-      'processing': '#76e4f7',
-      'ready': '#68d391',
-      'delivered': '#9ae6b4',
-      'cancelled': '#fc8181'
+      'pending': 'bg-amber-100 text-amber-800',
+      'picked-up': 'bg-sky-100 text-sky-800',
+      'processing': 'bg-cyan-100 text-cyan-800',
+      'ready': 'bg-green-100 text-green-800',
+      'delivered': 'bg-emerald-100 text-emerald-800',
+      'cancelled': 'bg-red-100 text-red-800'
     };
-    return map[status] || '#e2e8f0';
+    return map[status] || 'bg-gray-100 text-gray-800';
   };
 
   const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
 
   const filtered = filter === 'all' ? bookings : bookings.filter(b => b.status === filter);
 
-  const s = {
-    page: { fontFamily: "'Poppins', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)' },
-    header: { background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 },
-    navbar: { maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 2rem' },
-    logo: { fontSize: '1.5rem', fontWeight: 700, background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    navLinks: { display: 'flex', gap: '2rem', alignItems: 'center' },
-    navLink: { color: '#4a5568', textDecoration: 'none', fontWeight: 500 },
-    logoutBtn: { padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 600, fontFamily: 'Poppins' },
-    content: { maxWidth: '1000px', margin: '0 auto', padding: '3rem 2rem' },
-    title: { color: 'white', fontSize: '2.5rem', fontWeight: 700, marginBottom: '1.5rem', textAlign: 'center' },
-    filters: { display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' },
-    filterBtn: (active) => ({
-      padding: '0.5rem 1.2rem', borderRadius: '20px', border: 'none', cursor: 'pointer',
-      fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem',
-      background: active ? 'white' : 'rgba(255,255,255,0.2)',
-      color: active ? '#4D6F71' : 'white', transition: 'all 0.3s'
-    }),
-    card: { background: 'rgba(255,255,255,0.97)', borderRadius: '15px', padding: '1.5rem', marginBottom: '1.5rem', boxShadow: '0 5px 20px rgba(0,0,0,0.1)' },
-    cardHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '2px solid #e2e8f0', flexWrap: 'wrap', gap: '0.5rem' },
-    statusBadge: (status) => ({ padding: '5px 14px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 700, background: getStatusColor(status), color: '#2d3748', display: 'inline-block' }),
-    infoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1rem' },
-    infoLabel: { fontSize: '0.75rem', color: '#718096', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '3px' },
-    infoValue: { fontSize: '0.95rem', color: '#2d3748', fontWeight: 500 },
-    serviceTag: { display: 'inline-block', padding: '3px 10px', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, marginRight: '5px', marginBottom: '5px' },
-    cancelBtn: { padding: '0.5rem 1.2rem', background: '#fc8181', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.9rem' },
-    bookNowBtn: { padding: '1rem 3rem', background: 'white', color: '#4D6F71', border: 'none', borderRadius: '25px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 700, fontSize: '1rem', display: 'block', margin: '0 auto' },
-  };
-
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}>
-          <div style={s.logo}>IV's Laundry Service</div>
-          <div style={s.navLinks}>
-            <Link to="/services" style={s.navLink}>Services</Link>
-            <Link to="/my-bookings" style={{ ...s.navLink, color: '#4D6F71', fontWeight: 700 }}>My Bookings</Link>
-            <Link to="/profile" style={s.navLink}>Profile</Link>
-            <button onClick={handleLogout} style={s.logoutBtn}>Log Out</button>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans">
+      <header className="bg-white/95 backdrop-blur shadow-[0_4px_20px_rgba(0,0,0,0.1)] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center px-8 py-5 gap-4">
+          <div className="text-2xl font-bold bg-gradient-to-br from-[#4D6F71] to-[#365456] bg-clip-text text-transparent">IV's Laundry Service</div>
+          <div className="flex flex-wrap items-center gap-6">
+            <Link to="/services" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Services</Link>
+            <Link to="/my-bookings" className="text-primary font-bold text-[0.95rem] transition-colors hover:text-primary-light">My Bookings</Link>
+            <Link to="/profile" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Profile</Link>
+            <button onClick={handleLogout} className="px-6 py-2 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white border-none rounded-[25px] cursor-pointer font-semibold text-sm transition-all duration-300 hover:shadow-[0_4px_15px_rgba(0,0,0,0.25)]">Log Out</button>
           </div>
         </div>
       </header>
 
-      <div style={s.content}>
-        <h1 style={s.title}>My Bookings</h1>
+      <div className="max-w-[1000px] mx-auto px-8 py-12">
+        <h1 className="text-white text-4xl font-bold mb-6 text-center">My Bookings</h1>
 
         {/* Status Filters */}
-        <div style={s.filters}>
+        <div className="flex gap-2 mb-8 flex-wrap justify-center">
           {['all', 'pending', 'picked-up', 'processing', 'ready', 'delivered', 'cancelled'].map(f => (
-            <button key={f} style={s.filterBtn(filter === f)} onClick={() => setFilter(f)}>
+            <button 
+              key={f} 
+              className={`px-5 py-2 rounded-full border-none cursor-pointer font-bold text-xs transition-all duration-300 ${
+                filter === f 
+                  ? 'bg-white text-[#4D6F71] shadow-sm' 
+                  : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+              onClick={() => setFilter(f)}
+            >
               {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', color: 'white', padding: '3rem', fontSize: '1.2rem' }}>
+          <div className="text-center text-white py-12 text-lg">
+            <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             Loading your bookings...
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <p style={{ color: 'white', fontSize: '1.2rem', marginBottom: '1.5rem' }}>
+          <div className="text-center py-12">
+            <p className="text-white text-lg mb-6">
               {filter === 'all' ? "You don't have any bookings yet." : `No ${filter} bookings found.`}
             </p>
-            <button onClick={() => navigate('/services')} style={s.bookNowBtn}>📅 Book Now</button>
+            <button onClick={() => navigate('/services')} className="px-12 py-4 bg-white text-primary border-none rounded-[25px] cursor-pointer font-extrabold text-base mx-auto block shadow-lg transition-transform hover:-translate-y-0.5">📅 Book Now</button>
           </div>
         ) : (
           filtered.map(b => (
-            <div key={b._id} style={s.card}>
-              <div style={s.cardHeader}>
+            <div key={b._id} className="bg-white/97 backdrop-blur-sm rounded-[15px] p-6 mb-6 shadow-[0_5px_20px_rgba(0,0,0,0.1)]">
+              <div className="flex justify-between items-start mb-4 pb-4 border-b-2 border-gray-100 flex-wrap gap-2">
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#2d3748', marginBottom: '4px' }}>
+                  <div className="font-extrabold text-base text-gray-850 mb-1">
                     Booking #{b._id.slice(-6).toUpperCase()}
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#a0aec0' }}>
+                  <div className="text-xs text-gray-400 font-medium">
                     Created: {new Date(b.createdAt).toLocaleDateString()}
                   </div>
                 </div>
-                <span style={s.statusBadge(b.status)}>{b.status?.toUpperCase()}</span>
+                <span className={`px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide uppercase ${getStatusBadgeClass(b.status)}`}>
+                  {b.status}
+                </span>
               </div>
 
               {/* Services */}
-              <div style={{ marginBottom: '1rem' }}>
-                <span style={s.infoLabel}>Services</span>
-                <div>
+              <div className="mb-4 text-left">
+                <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Services</span>
+                <div className="flex flex-wrap">
                   {b.services?.map(sv => (
-                    <span key={sv._id} style={s.serviceTag}>{sv.name}</span>
+                    <span key={sv._id} className="inline-block px-3 py-1 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white rounded-full text-[11px] font-semibold mr-1.5 mb-1.5">{sv.name}</span>
                   ))}
                 </div>
               </div>
 
               {/* Info Grid */}
-              <div style={s.infoGrid}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-left">
                 <div>
-                  <span style={s.infoLabel}>Pickup Date</span>
-                  <span style={s.infoValue}>{formatDate(b.pickupDate)}</span>
+                  <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Pickup Date</span>
+                  <span className="text-sm text-gray-750 font-semibold">{formatDate(b.pickupDate)}</span>
                 </div>
                 <div>
-                  <span style={s.infoLabel}>Delivery Date</span>
-                  <span style={s.infoValue}>{formatDate(b.deliveryDate)}</span>
+                  <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Delivery Date</span>
+                  <span className="text-sm text-gray-750 font-semibold">{formatDate(b.deliveryDate)}</span>
                 </div>
                 <div>
-                  <span style={s.infoLabel}>Pickup Address</span>
-                  <span style={s.infoValue}>{b.pickupAddress || 'N/A'}</span>
+                  <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Pickup Address</span>
+                  <span className="text-sm text-gray-755 font-semibold leading-snug break-words">{b.pickupAddress || 'N/A'}</span>
                 </div>
                 <div>
-                  <span style={s.infoLabel}>Total Price</span>
-                  <span style={{ ...s.infoValue, color: '#4D6F71', fontWeight: 700, fontSize: '1.1rem' }}>
+                  <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Total Price</span>
+                  <span className="text-base text-primary font-extrabold">
                     ₱{parseFloat(b.totalPrice || 0).toFixed(2)}
                   </span>
                 </div>
               </div>
 
               {b.notes && (
-                <div style={{ marginBottom: '1rem' }}>
-                  <span style={s.infoLabel}>Notes</span>
-                  <span style={s.infoValue}>{b.notes}</span>
+                <div className="mb-4 text-left">
+                  <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider block mb-1">Notes</span>
+                  <span className="text-sm text-gray-700 font-medium bg-gray-50 p-2 rounded-lg block border border-gray-100">{b.notes}</span>
                 </div>
               )}
 
               {b.status === 'pending' && (
-                <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
-                  <button onClick={() => handleCancel(b._id)} style={s.cancelBtn}>✕ Cancel Booking</button>
+                <div className="text-right mt-2">
+                  <button onClick={() => handleCancel(b._id)} className="px-5 py-2 bg-red-500 text-white border-none rounded-lg cursor-pointer font-semibold text-sm transition-colors hover:bg-red-600">✕ Cancel Booking</button>
                 </div>
               )}
             </div>
@@ -190,3 +171,4 @@ function MyBookings() {
 }
 
 export default MyBookings;
+

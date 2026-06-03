@@ -64,14 +64,13 @@ function Booking() {
 
     setLoading(true);
     try {
-      // FIX: Include user ID and totalPrice in the request
       await axios.post('/api/bookings', {
-        user: user.id,                          // ← THIS WAS THE FIX
+        user: user.id,
         services: selectedServiceIds,
         pickupDate: pickupDateTime.toISOString(),
         deliveryDate: deliveryDateTime.toISOString(),
         pickupAddress: form.pickupAddress,
-        totalPrice: getTotal(),                 // ← Also send total price
+        totalPrice: getTotal(),
         notes: form.notes
       });
       sessionStorage.removeItem('selectedServices');
@@ -90,152 +89,134 @@ function Booking() {
     }
   };
 
-  const s = {
-    page: { fontFamily: "'Poppins', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)' },
-    header: { background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 },
-    navbar: { maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 2rem' },
-    logo: { fontSize: '1.5rem', fontWeight: 700, background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    navLinks: { display: 'flex', gap: '2rem', alignItems: 'center' },
-    navLink: { color: '#4a5568', textDecoration: 'none', fontWeight: 500 },
-    logoutBtn: { padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 600, fontFamily: 'Poppins' },
-    content: { maxWidth: '800px', margin: '0 auto', padding: '3rem 2rem' },
-    title: { color: 'white', fontSize: '2.5rem', fontWeight: 700, marginBottom: '2rem', textAlign: 'center' },
-    card: { background: 'rgba(255,255,255,0.97)', borderRadius: '20px', padding: '2rem', marginBottom: '1.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' },
-    sectionTitle: { fontSize: '1.1rem', fontWeight: 700, color: '#2d3748', marginBottom: '1.2rem', paddingBottom: '0.5rem', borderBottom: '2px solid #e2e8f0' },
-    servicesGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.8rem' },
-    serviceItem: (sel) => ({
-      padding: '0.8rem', border: `2px solid ${sel ? '#4D6F71' : '#e2e8f0'}`, borderRadius: '10px',
-      cursor: 'pointer', background: sel ? 'linear-gradient(135deg, #4D6F71, #365456)' : 'white',
-      transition: 'all 0.3s', display: 'flex', alignItems: 'center', gap: '0.5rem'
-    }),
-    serviceName: (sel) => ({ fontWeight: 600, color: sel ? 'white' : '#2d3748', fontSize: '0.9rem' }),
-    servicePrice: (sel) => ({ fontSize: '0.8rem', color: sel ? 'rgba(255,255,255,0.8)' : '#4D6F71', fontWeight: 600 }),
-    grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' },
-    formGroup: { marginBottom: '1rem' },
-    label: { display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: '#4a5568', fontSize: '0.9rem' },
-    input: { width: '100%', padding: '0.8rem 1rem', borderRadius: '10px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', fontSize: '0.9rem', boxSizing: 'border-box' },
-    totalBar: { background: 'linear-gradient(135deg, #4D6F71, #365456)', borderRadius: '12px', padding: '1rem 1.5rem', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' },
-    submitBtn: { width: '100%', padding: '1rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 700, fontSize: '1rem', cursor: 'pointer', fontFamily: 'Poppins', marginTop: '1rem' },
-    successCard: { background: 'white', borderRadius: '20px', padding: '3rem', textAlign: 'center', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' },
-    successBtn: { padding: '0.8rem 2rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600, fontSize: '1rem', marginRight: '1rem' },
-  };
-
   if (success) return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}><div style={s.logo}>IV's Laundry Service</div></div>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans">
+      <header className="bg-white/95 backdrop-blur shadow-[0_4px_20px_rgba(0,0,0,0.1)] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center px-8 py-5 gap-4">
+          <div className="text-2xl font-bold bg-gradient-to-br from-[#4D6F71] to-[#365456] bg-clip-text text-transparent">IV's Laundry Service</div>
+        </div>
       </header>
-      <div style={s.content}>
-        <div style={s.successCard}>
-          <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>🎉</div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#4D6F71', marginBottom: '0.5rem' }}>Booking Confirmed!</h2>
-          <p style={{ color: '#4a5568', marginBottom: '2rem' }}>
+      <div className="max-w-[800px] mx-auto px-8 py-12">
+        <div className="bg-white rounded-[20px] p-12 text-center shadow-[0_10px_30px_rgba(0,0,0,0.15)] max-w-lg mx-auto">
+          <div className="text-[80px] mb-4">🎉</div>
+          <h2 className="text-3xl font-bold text-primary mb-2">Booking Confirmed!</h2>
+          <p className="text-gray-600 mb-8 leading-relaxed">
             Your laundry booking has been successfully created.<br />
             We'll pick up your laundry on the scheduled date.
           </p>
-          <button onClick={() => navigate('/my-bookings')} style={s.successBtn}>View My Bookings</button>
-          <button onClick={() => { setSuccess(false); setSelectedServiceIds([]); }} style={{ ...s.successBtn, background: '#e2e8f0', color: '#4D6F71' }}>Book Again</button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={() => navigate('/my-bookings')} className="px-8 py-3 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white font-bold rounded-[25px] transition-all duration-300 hover:shadow-[0_4px_15px_rgba(0,0,0,0.25)]">View My Bookings</button>
+            <button onClick={() => { setSuccess(false); setSelectedServiceIds([]); }} className="px-8 py-3 bg-gray-100 text-[#4D6F71] font-bold rounded-[25px] border-2 border-[#4D6F71]/10 transition-all duration-300 hover:bg-gray-200">Book Again</button>
+          </div>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}>
-          <div style={s.logo}>IV's Laundry Service</div>
-          <div style={s.navLinks}>
-            <Link to="/services" style={s.navLink}>Services</Link>
-            <Link to="/my-bookings" style={s.navLink}>My Bookings</Link>
-            <Link to="/profile" style={s.navLink}>Profile</Link>
-            <button onClick={handleLogout} style={s.logoutBtn}>Log Out</button>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans">
+      <header className="bg-white/95 backdrop-blur shadow-[0_4px_20px_rgba(0,0,0,0.1)] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center px-8 py-5 gap-4">
+          <div className="text-2xl font-bold bg-gradient-to-br from-[#4D6F71] to-[#365456] bg-clip-text text-transparent">IV's Laundry Service</div>
+          <div className="flex flex-wrap items-center gap-6">
+            <Link to="/services" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Services</Link>
+            <Link to="/my-bookings" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">My Bookings</Link>
+            <Link to="/profile" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Profile</Link>
+            <button onClick={handleLogout} className="px-6 py-2 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white border-none rounded-[25px] cursor-pointer font-semibold text-sm transition-all duration-300 hover:shadow-[0_4px_15px_rgba(0,0,0,0.25)]">Log Out</button>
           </div>
         </div>
       </header>
 
-      <div style={s.content}>
-        <h1 style={s.title}>Create Booking</h1>
+      <div className="max-w-[800px] mx-auto px-8 py-12">
+        <h1 className="text-white text-4xl font-bold mb-8 text-center">Create Booking</h1>
         <form onSubmit={handleSubmit}>
 
           {/* Services */}
-          <div style={s.card}>
-            <div style={s.sectionTitle}>Select Services *</div>
+          <div className="bg-white/97 backdrop-blur-sm rounded-[20px] p-8 mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+            <div className="text-lg font-bold text-gray-800 mb-5 pb-2 border-b-2 border-gray-100">Select Services *</div>
             {services.length === 0 ? (
-              <p style={{ color: '#718096' }}>Loading services...</p>
+              <p className="text-gray-500 font-medium animate-pulse">Loading services...</p>
             ) : (
-              <div style={s.servicesGrid}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {services.map(sv => {
                   const sel = selectedServiceIds.includes(sv._id);
                   return (
-                    <div key={sv._id} style={s.serviceItem(sel)} onClick={() => toggleService(sv._id)}>
-                      <div style={{ flex: 1 }}>
-                        <div style={s.serviceName(sel)}>{sv.name}</div>
-                        <div style={s.servicePrice(sel)}>₱{parseFloat(sv.price).toFixed(2)}</div>
+                    <div 
+                      key={sv._id} 
+                      className={`p-3.5 border-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${
+                        sel 
+                          ? 'border-primary bg-gradient-to-br from-[#4D6F71] to-[#365456]' 
+                          : 'border-gray-200 bg-white hover:border-primary'
+                      }`}
+                      onClick={() => toggleService(sv._id)}
+                    >
+                      <div className="flex-1 pr-2">
+                        <div className={`font-bold text-sm leading-tight ${sel ? 'text-white' : 'text-gray-800'}`}>{sv.name}</div>
+                        <div className={`text-xs mt-1 font-semibold ${sel ? 'text-white/80' : 'text-primary'}`}>₱{parseFloat(sv.price).toFixed(2)}</div>
                       </div>
-                      {sel && <span style={{ color: 'white', fontWeight: 700, fontSize: '1.2rem' }}>✓</span>}
+                      {sel && <span className="text-white font-bold text-lg pl-1">✓</span>}
                     </div>
                   );
                 })}
               </div>
             )}
             {selectedServiceIds.length > 0 && (
-              <div style={s.totalBar}>
-                <span style={{ fontWeight: 600 }}>{selectedServiceIds.length} service(s) selected</span>
-                <span style={{ fontSize: '1.3rem', fontWeight: 700 }}>Total: ₱{getTotal().toFixed(2)}</span>
+              <div className="bg-gradient-to-br from-[#4D6F71] to-[#365456] rounded-xl p-4 text-white flex justify-between items-center mt-5">
+                <span className="font-semibold text-sm">{selectedServiceIds.length} service(s) selected</span>
+                <span className="text-xl font-bold">Total: ₱{getTotal().toFixed(2)}</span>
               </div>
             )}
           </div>
 
           {/* Schedule */}
-          <div style={s.card}>
-            <div style={s.sectionTitle}>Schedule</div>
-            <div style={s.grid2}>
-              <div style={s.formGroup}>
-                <label style={s.label}>Pickup Date *</label>
-                <input type="date" style={s.input} value={form.pickupDate}
+          <div className="bg-white/97 backdrop-blur-sm rounded-[20px] p-8 mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+            <div className="text-lg font-bold text-gray-800 mb-5 pb-2 border-b-2 border-gray-100">Schedule</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mb-4 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Pickup Date *</label>
+                <input type="date" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={form.pickupDate}
                   onChange={e => setForm({ ...form, pickupDate: e.target.value })}
                   min={new Date().toISOString().split('T')[0]} required />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Pickup Time</label>
-                <input type="time" style={s.input} value={form.pickupTime}
+              <div className="mb-4 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Pickup Time</label>
+                <input type="time" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={form.pickupTime}
                   onChange={e => setForm({ ...form, pickupTime: e.target.value })} />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Delivery Date *</label>
-                <input type="date" style={s.input} value={form.deliveryDate}
+              <div className="mb-4 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Delivery Date *</label>
+                <input type="date" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={form.deliveryDate}
                   onChange={e => setForm({ ...form, deliveryDate: e.target.value })}
                   min={form.pickupDate || new Date().toISOString().split('T')[0]} required />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Delivery Time</label>
-                <input type="time" style={s.input} value={form.deliveryTime}
+              <div className="mb-4 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Delivery Time</label>
+                <input type="time" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={form.deliveryTime}
                   onChange={e => setForm({ ...form, deliveryTime: e.target.value })} />
               </div>
             </div>
           </div>
 
           {/* Address & Notes */}
-          <div style={s.card}>
-            <div style={s.sectionTitle}>Address & Notes</div>
-            <div style={s.formGroup}>
-              <label style={s.label}>Pickup Address *</label>
-              <textarea style={{ ...s.input, resize: 'vertical', minHeight: '80px' }}
+          <div className="bg-white/97 backdrop-blur-sm rounded-[20px] p-8 mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+            <div className="text-lg font-bold text-gray-800 mb-5 pb-2 border-b-2 border-gray-100">Address & Notes</div>
+            <div className="mb-4 text-left">
+              <label className="block mb-2 font-semibold text-gray-700 text-sm">Pickup Address *</label>
+              <textarea className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans resize-y min-h-[80px]"
                 value={form.pickupAddress}
                 onChange={e => setForm({ ...form, pickupAddress: e.target.value })}
                 required placeholder="Enter your complete address" />
             </div>
-            <div style={s.formGroup}>
-              <label style={s.label}>Additional Notes (Optional)</label>
-              <textarea style={{ ...s.input, resize: 'vertical', minHeight: '80px' }}
+            <div className="mb-4 text-left">
+              <label className="block mb-2 font-semibold text-gray-700 text-sm">Additional Notes (Optional)</label>
+              <textarea className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans resize-y min-h-[80px]"
                 value={form.notes}
                 onChange={e => setForm({ ...form, notes: e.target.value })}
                 placeholder="Any special instructions..." />
             </div>
           </div>
 
-          <button type="submit" style={{ ...s.submitBtn, opacity: loading ? 0.7 : 1 }} disabled={loading}>
+          <button type="submit" className="w-full py-4 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white font-bold rounded-xl transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:pointer-events-none" disabled={loading}>
             {loading ? 'Creating Booking...' : '✓ Confirm Booking'}
           </button>
         </form>

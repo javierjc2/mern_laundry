@@ -50,105 +50,114 @@ function Profile() {
     if (window.confirm('Are you sure you want to log out?')) { logout(); navigate('/login'); }
   };
 
-  const s = {
-    page: { fontFamily: "'Poppins', sans-serif", minHeight: '100vh', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)' },
-    header: { background: 'rgba(255,255,255,0.95)', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 100 },
-    navbar: { maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 2rem' },
-    logo: { fontSize: '1.5rem', fontWeight: 700, background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-    navLinks: { display: 'flex', gap: '2rem', alignItems: 'center' },
-    navLink: { color: '#4a5568', textDecoration: 'none', fontWeight: 500 },
-    logoutBtn: { padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #4D6F71 0%, #365456 100%)', color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontWeight: 600, fontFamily: 'Poppins' },
-    content: { maxWidth: '800px', margin: '0 auto', padding: '3rem 2rem' },
-    title: { color: 'white', fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5rem', textAlign: 'center' },
-    subtitle: { color: 'rgba(255,255,255,0.8)', textAlign: 'center', marginBottom: '2rem', fontSize: '0.95rem' },
-    avatar: { width: '100px', height: '100px', borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 700, color: '#4D6F71', margin: '0 auto 1rem', boxShadow: '0 5px 20px rgba(0,0,0,0.2)' },
-    tabs: { display: 'flex', gap: '0', marginBottom: '0', borderRadius: '15px 15px 0 0', overflow: 'hidden' },
-    tab: (active) => ({ flex: 1, padding: '1rem', border: 'none', cursor: 'pointer', fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.95rem', background: active ? 'white' : 'rgba(255,255,255,0.3)', color: active ? '#4D6F71' : 'white', transition: 'all 0.3s' }),
-    card: { background: 'rgba(255,255,255,0.97)', borderRadius: '0 0 15px 15px', padding: '2rem', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' },
-    formGroup: { marginBottom: '1.2rem' },
-    label: { display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: '#4a5568', fontSize: '0.9rem' },
-    input: { width: '100%', padding: '0.8rem 1rem', borderRadius: '10px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', fontSize: '0.95rem', boxSizing: 'border-box', transition: 'border 0.3s' },
-    disabledInput: { width: '100%', padding: '0.8rem 1rem', borderRadius: '10px', border: '2px solid #e2e8f0', fontFamily: 'Poppins', fontSize: '0.95rem', boxSizing: 'border-box', background: '#f7fafc', color: '#718096' },
-    submitBtn: { width: '100%', padding: '1rem', background: 'linear-gradient(135deg, #4D6F71, #365456)', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '1rem', cursor: 'pointer', fontFamily: 'Poppins', marginTop: '0.5rem' },
-    alert: (type) => ({ padding: '0.8rem 1rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 500, background: type === 'success' ? '#c6f6d5' : '#fed7d7', color: type === 'success' ? '#276749' : '#9b2c2c', border: `1px solid ${type === 'success' ? '#9ae6b4' : '#fc8181'}` }),
-    grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' },
-    sectionTitle: { fontSize: '1.1rem', fontWeight: 700, color: '#2d3748', marginBottom: '1.5rem', paddingBottom: '0.5rem', borderBottom: '2px solid #e2e8f0' },
-  };
-
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.navbar}>
-          <div style={s.logo}>IV's Laundry Service</div>
-          <div style={s.navLinks}>
-            <Link to="/services" style={s.navLink}>Services</Link>
-            <Link to="/my-bookings" style={s.navLink}>My Bookings</Link>
-            <Link to="/profile" style={{...s.navLink, color: '#4D6F71', fontWeight: 700}}>Profile</Link>
-            <button onClick={handleLogout} style={s.logoutBtn}>Log Out</button>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D6F71] to-[#365456] font-sans">
+      <header className="bg-white/95 backdrop-blur shadow-[0_4px_20px_rgba(0,0,0,0.1)] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row justify-between items-center px-8 py-5 gap-4">
+          <div className="text-2xl font-bold bg-gradient-to-br from-[#4D6F71] to-[#365456] bg-clip-text text-transparent">IV's Laundry Service</div>
+          <div className="flex flex-wrap items-center gap-6">
+            <Link to="/services" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">Services</Link>
+            <Link to="/my-bookings" className="text-gray-600 font-semibold text-[0.95rem] transition-colors hover:text-primary">My Bookings</Link>
+            <Link to="/profile" className="text-primary font-bold text-[0.95rem] transition-colors hover:text-primary-light">Profile</Link>
+            <button onClick={handleLogout} className="px-6 py-2 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white border-none rounded-[25px] cursor-pointer font-semibold text-sm transition-all duration-300 hover:shadow-[0_4px_15px_rgba(0,0,0,0.25)]">Log Out</button>
           </div>
         </div>
       </header>
 
-      <div style={s.content}>
-        <div style={s.avatar}>
+      <div className="max-w-[800px] mx-auto px-8 py-12">
+        <div className="w-[100px] h-[100px] rounded-full bg-white flex items-center justify-center text-4xl font-bold text-[#4D6F71] mx-auto mb-4 shadow-[0_5px_20px_rgba(0,0,0,0.2)]">
           {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
         </div>
-        <h1 style={s.title}>{user?.firstName} {user?.lastName}</h1>
-        <p style={s.subtitle}>{user?.email}</p>
+        <h1 className="text-white text-4xl font-bold mb-2 text-center">{user?.firstName} {user?.lastName}</h1>
+        <p className="text-white/80 text-center mb-8 text-[0.95rem]">{user?.email}</p>
 
-        <div style={s.tabs}>
-          <button style={s.tab(activeTab === 'profile')} onClick={() => setActiveTab('profile')}>Edit Profile</button>
-          <button style={s.tab(activeTab === 'password')} onClick={() => setActiveTab('password')}>Change Password</button>
+        <div className="flex mb-0 rounded-t-[15px] overflow-hidden">
+          <button 
+            className={`flex-1 py-4 border-none cursor-pointer font-bold text-sm transition-all duration-300 ${
+              activeTab === 'profile' 
+                ? 'bg-white text-[#4D6F71]' 
+                : 'bg-white/30 text-white hover:bg-white/40'
+            }`} 
+            onClick={() => setActiveTab('profile')}
+          >
+            Edit Profile
+          </button>
+          <button 
+            className={`flex-1 py-4 border-none cursor-pointer font-bold text-sm transition-all duration-300 ${
+              activeTab === 'password' 
+                ? 'bg-white text-[#4D6F71]' 
+                : 'bg-white/30 text-white hover:bg-white/40'
+            }`} 
+            onClick={() => setActiveTab('password')}
+          >
+            Change Password
+          </button>
         </div>
 
-        <div style={s.card}>
+        <div className="bg-white/97 backdrop-blur-sm rounded-b-[15px] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
           {activeTab === 'profile' && (
             <form onSubmit={handleProfileSubmit}>
-              <div style={s.sectionTitle}>Personal Information</div>
-              {profileMsg.text && <div style={s.alert(profileMsg.type)}>{profileMsg.text}</div>}
-              <div style={s.grid2}>
-                <div style={s.formGroup}>
-                  <label style={s.label}>First Name *</label>
-                  <input style={s.input} value={profileForm.firstName} onChange={e => setProfileForm({...profileForm, firstName: e.target.value})} required />
+              <div className="text-lg font-bold text-gray-800 mb-6 pb-2 border-b-2 border-gray-100">Personal Information</div>
+              {profileMsg.text && (
+                <div className={`p-4 rounded-lg mb-4 font-semibold text-sm border ${
+                  profileMsg.type === 'success' 
+                    ? 'bg-green-100 text-green-800 border-green-200' 
+                    : 'bg-red-100 text-red-800 border-red-200'
+                }`}>
+                  {profileMsg.text}
                 </div>
-                <div style={s.formGroup}>
-                  <label style={s.label}>Last Name *</label>
-                  <input style={s.input} value={profileForm.lastName} onChange={e => setProfileForm({...profileForm, lastName: e.target.value})} required />
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="mb-5 text-left">
+                  <label className="block mb-2 font-semibold text-gray-700 text-sm">First Name *</label>
+                  <input className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={profileForm.firstName} onChange={e => setProfileForm({...profileForm, firstName: e.target.value})} required />
+                </div>
+                <div className="mb-5 text-left">
+                  <label className="block mb-2 font-semibold text-gray-700 text-sm">Last Name *</label>
+                  <input className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={profileForm.lastName} onChange={e => setProfileForm({...profileForm, lastName: e.target.value})} required />
                 </div>
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Email (cannot be changed)</label>
-                <input style={s.disabledInput} value={profileForm.email} disabled />
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Email (cannot be changed)</label>
+                <input className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm font-sans bg-gray-50 text-gray-400 cursor-not-allowed" value={profileForm.email} disabled />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Phone Number</label>
-                <input style={s.input} value={profileForm.phone} onChange={e => setProfileForm({...profileForm, phone: e.target.value})} />
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Phone Number</label>
+                <input className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={profileForm.phone} onChange={e => setProfileForm({...profileForm, phone: e.target.value})} />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Address</label>
-                <textarea style={{...s.input, resize: 'vertical', minHeight: '80px'}} value={profileForm.address} onChange={e => setProfileForm({...profileForm, address: e.target.value})} />
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Address</label>
+                <textarea className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans resize-y min-h-[80px]" value={profileForm.address} onChange={e => setProfileForm({...profileForm, address: e.target.value})} />
               </div>
-              <button type="submit" style={s.submitBtn} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+              <button type="submit" className="w-full py-4 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white font-bold rounded-xl transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:pointer-events-none mt-2" disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
             </form>
           )}
 
           {activeTab === 'password' && (
             <form onSubmit={handlePasswordSubmit}>
-              <div style={s.sectionTitle}>Change Password</div>
-              {passwordMsg.text && <div style={s.alert(passwordMsg.type)}>{passwordMsg.text}</div>}
-              <div style={s.formGroup}>
-                <label style={s.label}>Current Password *</label>
-                <input type="password" style={s.input} value={passwordForm.currentPassword} onChange={e => setPasswordForm({...passwordForm, currentPassword: e.target.value})} required />
+              <div className="text-lg font-bold text-gray-800 mb-6 pb-2 border-b-2 border-gray-100">Change Password</div>
+              {passwordMsg.text && (
+                <div className={`p-4 rounded-lg mb-4 font-semibold text-sm border ${
+                  passwordMsg.type === 'success' 
+                    ? 'bg-green-100 text-green-800 border-green-200' 
+                    : 'bg-red-100 text-red-800 border-red-200'
+                }`}>
+                  {passwordMsg.text}
+                </div>
+              )}
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Current Password *</label>
+                <input type="password" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={passwordForm.currentPassword} onChange={e => setPasswordForm({...passwordForm, currentPassword: e.target.value})} required />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>New Password *</label>
-                <input type="password" style={s.input} value={passwordForm.newPassword} onChange={e => setPasswordForm({...passwordForm, newPassword: e.target.value})} required />
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">New Password *</label>
+                <input type="password" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={passwordForm.newPassword} onChange={e => setPasswordForm({...passwordForm, newPassword: e.target.value})} required />
               </div>
-              <div style={s.formGroup}>
-                <label style={s.label}>Confirm New Password *</label>
-                <input type="password" style={s.input} value={passwordForm.confirmPassword} onChange={e => setPasswordForm({...passwordForm, confirmPassword: e.target.value})} required />
+              <div className="mb-5 text-left">
+                <label className="block mb-2 font-semibold text-gray-700 text-sm">Confirm New Password *</label>
+                <input type="password" className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all focus:outline-none focus:border-primary font-sans" value={passwordForm.confirmPassword} onChange={e => setPasswordForm({...passwordForm, confirmPassword: e.target.value})} required />
               </div>
-              <button type="submit" style={s.submitBtn} disabled={saving}>{saving ? 'Changing...' : 'Change Password'}</button>
+              <button type="submit" className="w-full py-4 bg-gradient-to-br from-[#4D6F71] to-[#365456] text-white font-bold rounded-xl transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:pointer-events-none mt-2" disabled={saving}>{saving ? 'Changing...' : 'Change Password'}</button>
             </form>
           )}
         </div>
@@ -158,3 +167,4 @@ function Profile() {
 }
 
 export default Profile;
+
