@@ -141,13 +141,12 @@ function Booking() {
                 {services.map(sv => {
                   const sel = selectedServiceIds.includes(sv._id);
                   return (
-                    <div 
-                      key={sv._id} 
-                      className={`p-3.5 border-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${
-                        sel 
-                          ? 'border-primary bg-gradient-to-br from-[#4D6F71] to-[#365456]' 
-                          : 'border-gray-200 bg-white hover:border-primary'
-                      }`}
+                    <div
+                      key={sv._id}
+                      className={`p-3.5 border-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${sel
+                        ? 'border-primary bg-gradient-to-br from-[#4D6F71] to-[#365456]'
+                        : 'border-gray-200 bg-white hover:border-primary'
+                        }`}
                       onClick={() => toggleService(sv._id)}
                     >
                       <div className="flex-1 pr-2">
@@ -226,3 +225,4 @@ function Booking() {
 }
 
 export default Booking;
+
