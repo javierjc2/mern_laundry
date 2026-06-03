@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+const connectDB = require('./config/db');
 
 const app = express();
 
@@ -114,9 +115,8 @@ app.use((err, req, res, next) => {
 });
 
 // ── DATABASE ──────────────────────────────────────────────
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+connectDB();
+
 
 // ── START SERVER ──────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
